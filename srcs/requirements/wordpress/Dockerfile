@@ -13,21 +13,17 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
-# Create the PHP runtime directory
+# PHP runtime directory
 RUN mkdir -p /run/php && chown -R www-data:www-data /run/php
 
-# Configure PHP-FPM to listen on port 9000 instead of a Unix socket
 RUN sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
 
-# Copy the initialization script
 COPY tools/init.sh /usr/local/bin/init.sh
 RUN chmod +x /usr/local/bin/init.sh
 
-# Expose port 9000 for NGINX to connect to
 EXPOSE 9000
 
 # Set the working directory to the web root
 WORKDIR /var/www/html
 
-# Run the script when the container starts
 ENTRYPOINT ["/usr/local/bin/init.sh"]

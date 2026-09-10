@@ -1,19 +1,19 @@
 #!/bin/bash
 set -e
 
-# Ensure the web directory exists and has the right permissions
+#web directory
 mkdir -p /var/www/html
 chown -R www-data:www-data /var/www/html
 
 cd /var/www/html
 
-# 1. Download WordPress only if it hasn't been downloaded yet
+# 1. Download WordPress 
 if [ ! -f "wp-login.php" ]; then
     echo "Downloading WordPress..."
     wp core download --allow-root
 fi
 
-# 2. Configure and install WordPress only if the config file doesn't exist
+# 2. Configure and install WordPress
 if [ ! -f "wp-config.php" ]; then
     echo "Configuring WordPress..."
     
